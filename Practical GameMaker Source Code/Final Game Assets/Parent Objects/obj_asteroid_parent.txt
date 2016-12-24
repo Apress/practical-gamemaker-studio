@@ -1,0 +1,40 @@
+Information about object: obj_asteroid_parent
+Sprite: 
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+
+Children
+obj_asteroid_big
+obj_asteroid_medium
+obj_asteroid_small
+obj_enemy
+
+Mask: 
+
+No Physics Object
+Collision Event with object obj_bullet_parent:
+
+execute code:
+
+scr_bullet_hit();
+
+Draw Event:
+
+execute code:
+
+///draw self and a healthbar
+
+draw_self();
+if health>0
+{
+    draw_set_colour(c_blue);
+    draw_rectangle(x-50,y-50,x+50,y-40,0)
+    draw_set_colour(c_red);
+    draw_rectangle(x-50,y-50,x-50+((100/my_starting_health)*my_health),y-40,0);
+    draw_set_colour(c_black);
+    draw_rectangle(x-50,y-50,x+50,y-40,1)
+}
+

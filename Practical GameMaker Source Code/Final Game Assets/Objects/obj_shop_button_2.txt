@@ -1,0 +1,19 @@
+Information about object: obj_shop_button_2
+Sprite: spr_buy
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: obj_shop_button_parent
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Set ID
+button_id=2;
+
+

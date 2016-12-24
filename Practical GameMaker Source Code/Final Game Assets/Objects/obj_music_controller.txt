@@ -1,0 +1,22 @@
+Information about object: obj_music_controller
+Sprite: 
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+if !audio_is_playing(snd_music)
+{
+    audio_play_sound(snd_music,3,true);
+    audio_sound_gain(snd_music, 0.2, 0);
+}
+
+

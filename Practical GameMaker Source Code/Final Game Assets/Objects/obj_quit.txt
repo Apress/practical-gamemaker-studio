@@ -1,0 +1,28 @@
+Information about object: obj_quit
+Sprite: spr_quit
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Alarm Event for alarm 0:
+
+execute code:
+
+game_end();
+
+Step Event:
+
+execute code:
+
+///End Game If Clicked
+if (position_meeting(mouse_x, mouse_y, id) && mouse_check_button_released(mb_left))
+{
+    scr_voice(snd_voice_thanks_for_playing);
+    alarm[0]=room_speed*3;
+}
+

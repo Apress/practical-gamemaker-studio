@@ -1,0 +1,40 @@
+Information about object: obj_asteroid_big
+Sprite: spr_asteroid_big
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: obj_asteroid_parent
+Children: 
+Mask: 
+
+No Physics Object
+Step Event:
+
+execute code:
+
+///Rotate & Health Check
+image_angle+=rotate;
+
+
+if my_health<1
+{
+    scr_msg("Large##Asteroid##Destroyed");
+    //Add cash
+    global.cash+=my_starting_health;
+    //create a medium first
+    
+    scr_spawn(x,y,obj_asteroid_medium,my_starting_health/2,my_starting_health/2,rotate*-1,rotate*-1,direction-30,speed,speed);
+    scr_spawn(x,y,obj_asteroid_medium,my_starting_health/2,my_starting_health/2,rotate*-1,rotate*-1,direction+30,speed,speed);
+  
+    
+    //create enemy
+    enemy=instance_create(x,y,obj_enemy);
+    enemy.my_health=20*global.level*global.level;
+    enemy.my_starting_health=20*global.level*global.level;
+    
+    instance_destroy();
+}
+
+
+wrap in both directions when an instance moves outside the room

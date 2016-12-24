@@ -1,0 +1,64 @@
+Information about object: obj_enemy
+Sprite: spr_enemy
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: obj_asteroid_parent
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Start Alarm Bullet
+alarm[0]=((room_speed*4)/global.level);
+
+
+
+execute code:
+
+///Set Target and start moving
+target=scr_target(x,y,obj_ship);
+speed=2;
+
+Alarm Event for alarm 0:
+
+execute code:
+
+///Fire Bullet & Reset Alarm
+instance_create(x,y,obj_enemy_bullet);
+alarm[0]=((room_speed*4)/global.level);
+
+Step Event:
+
+execute code:
+
+///Target & Destroy
+
+if instance_exists(target)
+{
+    tx = target.x;
+    ty = target.y;
+    direction = scr_angle_rotate(direction, point_direction(x, y, tx, ty), 5);
+    image_angle = direction;
+    if my_health<0
+    {
+        scr_voice(snd_voice_enemy_killed);
+        effect_create_above(ef_firework,x,y,2,c_red);
+        effect_create_above(ef_flare,x,y,2,c_yellow);
+        instance_destroy();
+    }
+}
+
+
+Collision Event with object obj_bullet_parent:
+
+execute code:
+
+///Hit By Player
+effect_create_above(ef_ring,x,y,2,c_white);
+scr_bullet_hit();
+

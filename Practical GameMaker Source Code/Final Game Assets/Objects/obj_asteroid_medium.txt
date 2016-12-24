@@ -1,0 +1,31 @@
+Information about object: obj_asteroid_medium
+Sprite: spr_asteroid_medium
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: obj_asteroid_parent
+Children: 
+Mask: 
+
+No Physics Object
+Step Event:
+
+execute code:
+
+///Rotate & Health Check
+image_angle+=rotate
+
+if my_health<1
+{
+    //Add cash
+    global.cash+=my_starting_health;
+    scr_spawn(x,y,obj_asteroid_small,my_starting_health/2,my_starting_health/2,rotate*-1,rotate*-1,direction-50,speed*1.5,speed*1.5);
+    scr_spawn(x,y,obj_asteroid_small,my_starting_health/2,my_starting_health/2,rotate*-1,rotate*-1,direction+50,speed*1.5,speed*1.5);
+    scr_spawn(x,y,obj_asteroid_small,my_starting_health/2,my_starting_health/2,rotate*-1,rotate*-1,direction-180,speed*1.5,speed*1.5);
+
+    instance_destroy();
+}
+
+
+wrap in both directions when an instance moves outside the room

@@ -1,0 +1,18 @@
+Information about object: obj_button_4
+Sprite: spr_locked_or_not
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: obj_lock_parent
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+//Set a button ID
+my_id=4;
+

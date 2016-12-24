@@ -1,0 +1,300 @@
+Information about object: obj_ship
+Sprite: spr_ship_gun
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Set Variables
+can_be_hit=true;
+can_shoot=true;
+low_ammo=false;
+ship_speed=0;
+direction=0;
+rotation=0;
+turning_speed=2;
+acc_speed=0.3;
+max_speed=7;
+friction=0.1;
+slowing_speed=0.1;
+
+
+
+
+Alarm Event for alarm 0:
+
+execute code:
+
+///Set Shooting to True
+can_shoot=true;
+
+Alarm Event for alarm 1:
+
+execute code:
+
+///Can Be Hit (can lose health)
+can_be_hit=true;
+
+Alarm Event for alarm 2:
+
+execute code:
+
+//Low Ammo Set
+low_ammo=false;
+
+Step Event:
+
+execute code:
+
+///Weapon Keyboard Control
+
+//change weapon / ship type
+if keyboard_check_pressed(ord('1'))
+{
+    global.selected_weapon=1;
+    scr_voice(snd_voice_weapon_selected);
+}
+if keyboard_check_pressed(ord('2'))
+{
+    global.selected_weapon=2;
+    scr_voice(snd_voice_weapon_selected);
+}
+if keyboard_check_pressed(ord('3'))
+{
+    global.selected_weapon=3;
+    scr_voice(snd_voice_weapon_selected);
+}
+if keyboard_check_pressed(ord('4'))
+{
+    global.selected_weapon=4;
+    scr_voice(snd_voice_weapon_selected);
+}
+
+
+execute code:
+
+///Spawn Bullets
+if (global.weapon_info[3,global.selected_weapon]==0 && keyboard_check(ord('Z')) && can_shoot)
+{
+    scr_voice(choose(snd_voice_weapon_empty,snd_voice_no_ammo,snd_voice_number_keys_to_select_weapons));
+    can_shoot=false;
+    alarm[0]=room_speed; // Stops constant playing on keypress
+}
+//create weapon 1 bullet
+if (keyboard_check(ord('Z')) && global.selected_weapon==1 && global.weapon_info[3,global.selected_weapon]>0 && can_shoot)
+
+{
+    global.weapon_info[6,global.selected_weapon]+=1;
+    bullet_id = instance_create(x,y,obj_gun_bullet);
+    bullet_id.direction = image_angle;
+    bullet_id.speed = 6+speed;
+    global.weapon_info[3,global.selected_weapon]-=1;
+    alarm[0]=global.selected_weapon*8;
+    can_shoot=false;
+    scr_play_effect(global.weapon_info[5,global.selected_weapon]);
+   
+}
+
+//create weapon 2 bullets
+if (keyboard_check(ord('Z')) && global.selected_weapon==2 && global.weapon_info[3,global.selected_weapon]>0 && can_shoot)
+
+{
+    //This Weapon Only Has Two Bullets
+    //one
+    global.weapon_info[6,global.selected_weapon]+=1;
+    bullet_id = instance_create(x,y,obj_double_gun_bullet);
+    bullet_id.direction = image_angle-12;
+    bullet_id.speed = 8+speed;
+  
+    //two
+    global.weapon_info[6,global.selected_weapon]+=1;
+    bullet_id = instance_create(x,y,obj_double_gun_bullet);
+    bullet_id.direction = image_angle+12;
+    bullet_id.speed = 8+speed;
+   
+    
+    global.weapon_info[3,global.selected_weapon]-=2;
+    alarm[0]=global.selected_weapon*8;
+    can_shoot=false;
+    scr_play_effect(global.weapon_info[5,global.selected_weapon]);
+}
+
+//create weapon 3 bullet
+if (keyboard_check(ord('Z')) && global.selected_weapon==3 && global.weapon_info[3,global.selected_weapon]>0 && can_shoot)
+
+{
+    global.weapon_info[6,global.selected_weapon]+=1;
+    bullet_id = instance_create(x,y,obj_missile_bullet);
+    bullet_id.direction = image_angle;
+    bullet_id.speed = 5+speed;
+    global.weapon_info[3,global.selected_weapon]-=1;
+    alarm[0]=global.selected_weapon*4;
+    can_shoot=false;
+    scr_play_effect(global.weapon_info[5,global.selected_weapon]);
+  
+}
+
+//create weapon 4 bullet
+if (keyboard_check(ord('Z')) && global.selected_weapon==4 && global.weapon_info[3,global.selected_weapon]>0 && can_shoot)
+
+{
+    global.weapon_info[6,global.selected_weapon]+=1;
+    bullet_id = instance_create(x,y,obj_nuke_bullet);
+    bullet_id.direction = image_angle;
+    bullet_id.speed = 10+speed;
+    global.weapon_info[3,global.selected_weapon]-=1;
+    alarm[0]=global.selected_weapon*4;
+    can_shoot=false;
+    scr_play_effect(global.weapon_info[5,global.selected_weapon]);
+   
+}
+
+
+
+
+execute code:
+
+///Movement Code
+if (image_angle > 360) image_angle -= 360;
+if (image_angle < 0) image_angle += 360; 
+if keyboard_check(vk_up)
+{
+    if ship_speed<max_speed
+    {
+        ship_speed=ship_speed+acc_speed+(ship_speed/6);
+    }
+}
+if keyboard_check(vk_down)
+{
+    if ship_speed>0
+    {
+        ship_speed-=.5;
+    }
+    else if ship_speed>-3
+    {
+        ship_speed-=.05;
+    }
+}
+if ! keyboard_check(vk_down) && ! keyboard_check(vk_up)
+{
+    if ship_speed<-.5
+    {
+        ship_speed+=.5;
+    }
+    else if ship_speed>.5
+    {
+        ship_speed-=.2;
+    }
+    else ship_speed=0;
+}
+if keyboard_check(vk_right)
+{
+    if rotation>-40
+    {
+        rotation-=turning_speed;
+    }
+}
+if keyboard_check(vk_left)
+{
+    if rotation<40
+    {
+        rotation+=turning_speed;
+    }
+}
+if ! keyboard_check(vk_left) && ! keyboard_check(vk_right)
+{
+    if rotation<-5
+    {
+        rotation+=5;
+    }
+    else if rotation>5
+    {
+        rotation-=5;
+    }
+    else rotation=0;
+}
+if ship_speed>0
+{
+    image_angle+=ship_speed/30*rotation;
+}
+else
+if ship_speed<0
+{
+    image_angle+=ship_speed/20*rotation;
+}
+if image_angle>360
+{
+    image_angle-=360;
+}
+if image_angle<0
+{
+    image_angle+=360;
+}
+friction=speed/10;
+motion_add(image_angle,ship_speed/6);
+
+
+
+execute code:
+
+///Low Ammo Warning
+
+if (global.weapon_info[3,global.selected_weapon]<5 &&global.weapon_info[3,global.selected_weapon]>0 && !low_ammo)
+{
+    low_ammo=true;
+    alarm[2]=room_speed*3;
+    scr_voice(snd_voice_low_ammo);
+}
+
+execute code:
+
+///Testing
+//////////////////////////////testing buttons
+//for testing reset to middle
+if keyboard_check(ord('R')) {room_restart();}
+if keyboard_check(ord('A')) {health-=1;}
+if keyboard_check(ord('S')) {health+=1;}
+//////////////////////////////testing buttons
+
+wrap in both directions when an instance moves outside the room
+Collision Event with object obj_asteroid_parent:
+
+execute code:
+
+///If Can Be Hit Asteroid, lose health and set can be hit timer
+if can_be_hit
+{
+    health-=global.level*2;
+    can_be_hit=false;
+    alarm[1]=room_speed;
+    scr_voice(choose(snd_voice_im_bleeding,snd_voice_ouch,snd_voice_ow,snd_voice_thats_got_to_hurt));
+    effect_create_above(ef_firework,x,y,2,c_red);
+}
+
+Collision Event with object obj_enemy_bullet:
+
+execute code:
+
+///Hit by Bullet
+health-=global.level*2;
+scr_voice(choose(snd_voice_im_bleeding,snd_voice_ouch,snd_voice_ow,snd_voice_thats_got_to_hurt))
+effect_create_above(ef_firework,x,y,3,c_red);
+with (other) instance_destroy();
+
+Draw Event:
+
+execute code:
+
+///Draw Selected Ship
+draw_sprite_ext(global.weapon_info[4,global.selected_weapon],0,x,y,1,1,image_angle,c_white,1);
+
+
+

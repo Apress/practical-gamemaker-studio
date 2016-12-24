@@ -1,0 +1,26 @@
+Information about object: obj_enemy_bullet
+Sprite: spr_enemy_bullet
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Set Target and start moving
+target=scr_target(x,y,obj_ship);
+speed=2;
+
+Alarm Event for alarm 0:
+
+execute code:
+
+///Destroy
+instance_destroy();
+

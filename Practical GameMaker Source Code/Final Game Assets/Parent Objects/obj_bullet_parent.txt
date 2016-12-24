@@ -1,0 +1,33 @@
+Information about object: obj_bullet_parent
+Sprite: 
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+
+Children
+obj_double_gun_bullet
+obj_gun_bullet
+obj_missile_bullet
+obj_nuke_bullet
+
+Mask: 
+
+No Physics Object
+Alarm Event for alarm 0:
+
+execute code:
+
+///Alarm trigger - start fading
+live=false;
+
+Step Event:
+
+execute code:
+
+///Create fading if enabled
+scr_fading();
+
+wrap in both directions when an instance moves outside the room
+

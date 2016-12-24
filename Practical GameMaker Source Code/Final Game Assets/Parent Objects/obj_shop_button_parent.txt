@@ -1,0 +1,32 @@
+Information about object: obj_shop_button_parent
+Sprite: 
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+
+Children
+obj_shop_button_1
+obj_shop_button_2
+obj_shop_button_3
+obj_shop_button_4
+
+Mask: 
+
+No Physics Object
+Step Event:
+
+execute code:
+
+/// Buy If Enough && voices
+scr_buy(button_id);
+
+Draw Event:
+
+execute code:
+
+//Draw Button & Data
+scr_draw_shop();
+draw_self();
+

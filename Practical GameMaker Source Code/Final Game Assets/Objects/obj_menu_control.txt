@@ -1,0 +1,96 @@
+Information about object: obj_menu_control
+Sprite: 
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Save to INI Save File
+save=ini_open("save.ini");
+ini_write_real("main", "cash", global.cash);
+ini_write_real("main", "health", health);
+ini_write_real("main", "lives", lives);
+ini_write_real("main", "hits", global.hits);
+ini_write_real("main", "shots", global.shots);
+ini_write_real("main", "level", global.level);
+
+//weapon 1
+ini_write_real("weapon1", "bullets", global.weapon_info[3,1]);
+ini_write_real("weapon1", "shots", global.weapon_info[6,1]);
+
+//weapon 2
+ini_write_real("weapon2", "bullets", global.weapon_info[3,2]);
+ini_write_real("weapon2", "shots", global.weapon_info[6,2]);
+
+//weapon 3
+ini_write_real("weapon3", "bullets", global.weapon_info[3,3]);
+ini_write_real("weapon3", "shots", global.weapon_info[6,3]);
+
+//weapon 4
+ini_write_real("weapon4", "bullets", global.weapon_info[3,4]);
+ini_write_real("weapon4", "shots", global.weapon_info[6,4]);
+
+
+ini_close();
+
+execute code:
+
+///Play Music
+if !audio_is_playing(snd_music)
+{
+    audio_play_sound(snd_music,2,true);
+}
+
+Step Event:
+
+execute code:
+
+///Check If Game Complete
+
+if global.level==5
+{
+    room_goto(room_game_complete);
+}
+
+execute code:
+
+///For testing
+if keyboard_check_pressed(ord('Q'))
+{
+    global.level+=1;
+}
+if keyboard_check_pressed(ord('A'))
+{
+    global.level-=1;
+}
+
+
+Draw GUI Event:
+
+execute code:
+
+///draw stats and stuff
+scr_set_menu_text();
+draw_text(20,400,"Lives="+string(lives));
+draw_text(400,400,"Health="+string(health));
+draw_text(600,400,"Cash="+string(global.cash));
+total=0;
+for (i = 1; i < 5; i += 1)
+{
+    draw_text(20,400+(i*40),"Weapon: "+global.weapon_info[0,i]);
+    draw_text(400,400+(i*40),"Shots Fired: "+string(global.weapon_info[6,i]));
+    total+=global.weapon_info[6,i];
+}
+draw_text(20,640,"Total Shots Fired: "+string(total));
+
+draw_text(20,700 ,"Total Hits: "+string(global.hits));
+
+

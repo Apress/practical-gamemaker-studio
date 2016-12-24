@@ -1,0 +1,320 @@
+Information about object: obj_level_control_and_hud
+Sprite: 
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Set Background
+
+if global.my_level==1 background_index[0]=bg_level_1; 
+if global.my_level==2 background_index[0]=bg_level_2; 
+if global.my_level==3 background_index[0]=bg_level_3; 
+if global.my_level==4 background_index[0]=bg_level_4;
+   
+
+
+execute code:
+
+///Create Ship & Set Variables
+instance_create(400,400,obj_ship);
+//create message system
+instance_create(10,10,obj_message);
+//Show some user messages:
+scr_msg("Get Ready");
+scr_msg("Move With#Arrow Keys");
+scr_msg("Fire With#Z");
+scr_msg("Select Weapon#With# 1 2 3 4");
+//set other variables
+low_health=false;
+//start timer
+timer=0;
+alarm[1]=room_speed;
+//set flag for low health warning
+health_alarm=false;
+
+
+execute code:
+
+/// Play Voice
+
+if global.my_level==1 scr_voice(snd_voice_level_1); 
+if global.my_level==2 scr_voice(snd_voice_level_2);
+if global.my_level==3 scr_voice(snd_voice_level_3);
+if global.my_level==4 scr_voice(snd_voice_level_4);
+
+
+execute code:
+
+///Set Count to 0
+count=0;
+
+execute code:
+
+/// Spawn Asteroids
+//scr_spawn = Create an asteroid, x,y,asteroid,my_health,my_starting_health,min rotate, max rotate,
+//direction,speed min, speed max
+//level 1 Spawn 
+if global.my_level==1
+{
+    //asteroid no 1
+    scr_spawn(200,200,obj_asteroid_big,20,20,1,6,25,2,5);
+    
+    
+    //asteroid no 2
+    scr_spawn(600,600,obj_asteroid_big,20,20,1,6,180,2,5);
+    
+    //asteroid no 3
+    scr_spawn(800,200,obj_asteroid_big,20,20,1,6,230,2,5);
+}
+
+
+//level 2 Spawn 
+if global.my_level==2
+{
+    //asteroid no 1
+    scr_spawn(200,200,obj_asteroid_big,200,290,1,6,75,2,5);
+    
+    
+    //asteroid no 2
+    scr_spawn(600,600,obj_asteroid_big,200,200,1,6,300,2,5);
+    
+    //asteroid no 3
+    scr_spawn(800,200,obj_asteroid_big,200,200,1,6,45,2,5);
+    
+    //asteroid no 4
+    scr_spawn(800,200,obj_asteroid_big,200,200,1,6,130,2,5);
+}
+
+
+//level 3 Spawn 
+if global.my_level==3
+{
+    //asteroid no 1
+    scr_spawn(200,200,obj_asteroid_big,200,290,1,6,75,2,5);
+    
+    //asteroid no 2
+    scr_spawn(100,500,obj_asteroid_big,2000,2000,1,6,300,2,5);
+    
+    //asteroid no 3
+    scr_spawn(800,200,obj_asteroid_big,2000,2000,1,6,45,2,5);
+    
+    //asteroid no 4
+    scr_spawn(800,200,obj_asteroid_big,2000,2000,1,6,130,2,5);
+    
+    //asteroid no 5
+    scr_spawn(800,200,obj_asteroid_small,2000,2000,1,6,130,2,5);
+    
+    //asteroid no 6
+    scr_spawn(0,0,obj_asteroid_small,2000,2000,1,6,130,2,5);
+}
+
+
+
+//level 4 Spawn 
+if global.my_level==4
+{
+    //asteroid no 1
+    scr_spawn(200,200,obj_asteroid_big,8000,8000,1,6,75,2,5);
+    
+    
+    //asteroid no 2
+    scr_spawn(100,500,obj_asteroid_big,2000,2000,1,6,300,2,5);
+    
+    //asteroid no 3
+    scr_spawn(800,200,obj_asteroid_big,6000,6000,1,6,45,2,5);
+    
+    //asteroid no 4
+    scr_spawn(800,200,obj_asteroid_big,20000,20000,1,6,130,2,5);
+    
+    
+    //asteroid no 5
+    scr_spawn(800,200,obj_asteroid_small,2000,2000,1,6,130,2,5);
+    
+    
+    //asteroid no 6
+    scr_spawn(0,0,obj_asteroid_small,4000,4000,1,6,130,2,5);
+}
+
+
+
+
+Alarm Event for alarm 0:
+
+execute code:
+
+///Alarm for Health warning
+alarm[0]=room_speed*4; // set alarm at 4 seconds
+scr_voice(snd_voice_low_health);
+scr_msg("Low#Health");
+ 
+
+Alarm Event for alarm 1:
+
+execute code:
+
+///Increase & Reset Timer
+timer+=1;
+alarm[1]=5;
+
+Step Event:
+
+execute code:
+
+///Monitor Player
+if health<=0
+{
+    health=100;
+    lives-=1;
+    scr_voice(snd_voice_you_are_dead);
+    health_alarm=false;
+    alarm[0]=-1;
+}
+if lives<0 room_goto(room_game_over);
+//count shots of all weapons
+global.total_shots=global.weapon_info[6,1]+global.weapon_info[6,2]+global.weapon_info[6,3]+global.weapon_info[6,4];
+if !object_exists(obj_asteroid_parent) 
+{ 
+    global.level+=global.level; 
+    room_goto(room_menu); 
+} 
+  
+
+//check if low health, if it is play warning and set a new alarm
+
+if (health<25) && (!health_alarm=false)
+{
+    health_alarm=true;
+    alarm[0]=1;
+}
+
+execute code:
+
+///Timer Events
+if timer==5
+{
+    // prevent activating twice
+    timer+=1;
+    //perform action
+    instance_create(0,0,obj_cloud);
+}
+if timer==10
+{
+    // prevent activating twice
+    timer+=1;
+    //perform action
+    instance_create(0,0,obj_coin);
+}
+if timer==100
+{
+    // prevent activating twice
+    timer+=1;
+    //perform action
+    instance_create(0,0,obj_coin);
+}
+if timer==200
+{
+    // prevent activating twice
+    timer+=1;
+    //perform action
+    instance_create(0,0,obj_cloud);
+}
+
+if timer==500 timer=0;
+
+execute code:
+
+///Instance Count
+count=instance_number(obj_asteroid_parent);
+
+
+execute code:
+
+///Check If Level Complete
+if (instance_number(obj_asteroid_parent) == 0) 
+{ 
+   if global.current==true global.level+=1; 
+    room_goto(room_menu); 
+} 
+
+Draw GUI Event:
+
+execute code:
+
+///Draw Hud
+
+scr_shop_set_text();//draw HUD background
+//top bar
+draw_set_colour(c_blue);
+draw_rectangle(0,0,800,90,0);
+//border
+draw_rectangle(1,1,799,799,1);
+//draw weapon and ammo info
+draw_set_font(font_shop);
+draw_set_colour(c_white);
+draw_text(10,40,"Type: "+global.weapon_info[0,global.selected_weapon]);
+draw_text(320,40,"Ammo: "+string(global.weapon_info[3,global.selected_weapon]));
+draw_text(10,70,"Stength: "+string(global.weapon_info[1,global.selected_weapon]));
+draw_text(160,70,"Fired: "+string(global.weapon_info[6,global.selected_weapon]));
+draw_text(300,70 ,"Fired All: "+string(global.total_shots));
+draw_text(450,70 ,"Total Hits: "+string(global.hits));
+draw_text(620,70 ,"Cash: "+string(global.cash));
+
+
+
+draw the lives at (500,40) with sprite spr_lives
+draw the health bar with size (2,2,798,28) with back color blue and bar color green to red
+execute code:
+
+///Draw Radar
+draw_set_alpha(0.2);
+draw_circle(75,500,75,0);
+draw_set_alpha(1);
+draw_set_colour(c_green);
+draw_circle(75,500,75,1);
+draw_circle(75,500,10,1);
+draw_line(75,425,75,575);
+draw_line(0,500,150,500);
+
+
+//set internal radar coords to Ship.x and Ship.y
+if (!instance_exists(obj_ship))
+{
+    exit;
+}
+
+var d,a,radarX,radarY;
+
+radarX = obj_ship.x;
+radarY = obj_ship.y;
+
+with(obj_asteroid_parent)
+{
+    //how far
+    d = point_distance(radarX,radarY,x,y);
+    //in range
+    if( d < 800 && d > 600)  // This will set the blips to the outside edge, creating a lingering effect
+    { 
+        //convert radar range to radar display radius
+        d = 75; 
+        //angle to target
+        a = point_direction(radarX,radarY,x,y)
+        //draw relative to center of radar using simplified lengthdir function
+        draw_sprite(spr_blip, 0, 75 + lengthdir_x(d,a), 700 + lengthdir_y(d,a));
+    }
+    else if(d <= 600)  // This is the standard distance conversion on the radaar screen.
+    {
+        d = d/600*75;
+        a = point_direction(radarX,radarY,x,y)
+        draw_sprite(spr_blip, 0, 75 + lengthdir_x(d,a), 500 + lengthdir_y(d,a));
+    }
+}
+

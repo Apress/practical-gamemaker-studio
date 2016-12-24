@@ -1,0 +1,40 @@
+Information about object: obj_cloud
+Sprite: spr_cloud
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Set image and start path & play voice
+image_index=0;
+image_speed=0;
+y=irandom_range(100,700);
+path_start(path_cloud,irandom_range(2,10),path_action_continue,false); 
+scr_voice(snd_voice_weather_warning);
+
+Alarm Event for alarm 0:
+
+execute code:
+
+instance_destroy();
+
+Collision Event with object obj_bullet_parent:
+
+execute code:
+
+///Change Image When Hit By Bullet
+if image_index==0
+{
+    global.cash+=1000;
+    image_index=1;
+}
+alarm[0]=room_speed*3;
+

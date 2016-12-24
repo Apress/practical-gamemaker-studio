@@ -1,0 +1,32 @@
+Information about object: obj_nuke_bullet
+Sprite: spr_nuke_bullet
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: obj_bullet_parent
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Set up
+live=true;
+alarm[0]=room_speed;
+strength=global.weapon_info[1,4];
+global.weapon_info[6,4]+=1;
+
+Collision Event with object obj_asteroid_parent:
+
+execute code:
+
+///explosion sound and effects
+scr_play_effect(snd_explosion_nuke);
+repeat 20
+{
+    effect_create_above(ef_explosion,x+50-irandom(100),y+50-irandom(100),2,c_red);
+}
+

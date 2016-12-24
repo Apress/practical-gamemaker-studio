@@ -1,0 +1,100 @@
+Information about object: obj_splash
+Sprite: 
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+for all obj_splash: execute code:
+
+///Set Splash Timer
+alarm[0]=1*room_speed;
+
+execute code:
+
+///Declare Things Needed in Game
+randomize();
+//declare messaging system
+global.message=ds_list_create();
+global.selected_weapon=1;
+
+
+execute code:
+
+///Load From INI Save File
+save=ini_open("save.ini");
+global.cash=ini_read_real("main", "cash", 10000);
+health=ini_read_real("main", "health", 100);
+lives=ini_read_real("main", "lives", 8);
+global.hits=ini_read_real("main", "hits", 0);
+global.shots=ini_read_real("main", "shots", 0);
+global.level=ini_read_real("main", "level", 1);
+
+//weapon 1
+global.weapon_info[3,1]=ini_read_real("weapon1", "bullets", 200);
+global.weapon_info[6,1]=ini_read_real("weapon1", "shots", 0);
+
+//weapon 2
+global.weapon_info[3,2]=ini_read_real("weapon2", "bullets", 250);
+global.weapon_info[6,2]=ini_read_real("weapon2", "shots", 0);
+
+//weapon 3
+global.weapon_info[3,3]=ini_read_real("weapon3", "bullets", 200);
+global.weapon_info[6,3]=ini_read_real("weapon3", "shots", 0);
+
+//weapon 4
+global.weapon_info[3,4]=ini_read_real("weapon4", "bullets", 10);
+global.weapon_info[6,4]=ini_read_real("weapon4", "shots", 0);
+
+
+ini_close();
+
+execute code:
+
+///Declare Static Weapon Info
+
+//Ship Type
+global.weapon_info[0,1]="Gun";
+global.weapon_info[0,2]="Double Gun";
+global.weapon_info[0,3]="Missle";
+global.weapon_info[0,4]="Nuke";
+
+////Ship Weapon Strength
+global.weapon_info[1,1]=1;
+global.weapon_info[1,2]=5;
+global.weapon_info[1,3]=250;
+global.weapon_info[1,4]=1000;
+
+//Weapon Cost Per Bullet
+global.weapon_info[2,1]=1;
+global.weapon_info[2,2]=10;
+global.weapon_info[2,3]=300;
+global.weapon_info[2,4]=5000;
+
+//weapon sprite
+global.weapon_info[4,1]=spr_ship_gun;
+global.weapon_info[4,2]=spr_ship_double_gun;
+global.weapon_info[4,3]=spr_ship_missile;
+global.weapon_info[4,4]=spr_ship_nuke;
+
+//weapon firing sound
+global.weapon_info[5,1]=snd_gun;
+global.weapon_info[5,2]=snd_double_gun;
+global.weapon_info[5,3]=snd_missile;
+global.weapon_info[5,4]=snd_nuke;
+
+
+
+Alarm Event for alarm 0:
+
+execute code:
+
+///Splash Timer Exp - Goto Menu
+room_goto(room_menu);
+

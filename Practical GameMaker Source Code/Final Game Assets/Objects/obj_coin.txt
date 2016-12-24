@@ -1,0 +1,32 @@
+Information about object: obj_coin
+Sprite: spr_coin
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///start path & play voice
+y=irandom_range(200,600);
+path_start(path_coin_bonus, 5, path_action_continue, false);
+scr_voice(snd_voice_bonus);
+
+Collision Event with object obj_ship:
+
+execute code:
+
+///Increase Cash & Destroy
+global.cash+=10000;
+scr_voice(snd_voice_cash_boost);
+scr_msg("Bonus Cash");
+effect_create_above(ef_star,x,y,2,c_orange);
+instance_destroy();
+
+

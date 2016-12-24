@@ -1,0 +1,44 @@
+Information about object: obj_play_shop_button
+Sprite: spr_play
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Create Message Object, display message
+scr_voice(snd_voice_shop);
+instance_create(10,10,obj_message);
+scr_msg("Buy Your##Weapons");
+
+
+Step Event:
+
+execute code:
+
+///Goto Level When Clicked
+if (position_meeting(mouse_x, mouse_y, id) && mouse_check_button_released(mb_left))
+{
+    room_goto(room_level);
+}
+
+Draw Event:
+
+execute code:
+
+///Draw Text For Shop
+draw_self();
+scr_shop_set_text();
+draw_text(20,20,"Cash: "+string(global.cash));
+draw_text(50,40, "Weapon Type");//draw name
+draw_text(250,40, "Strength");//strength
+draw_text(350,40, "Cost");//cost
+draw_text(450,40, "Current");//current ammo
+

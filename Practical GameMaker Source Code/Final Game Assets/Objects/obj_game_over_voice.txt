@@ -1,0 +1,18 @@
+Information about object: obj_game_over_voice
+Sprite: 
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: 
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Voice Game Over
+scr_voice(snd_voice_game_over);
+

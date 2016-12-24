@@ -1,0 +1,29 @@
+Information about object: obj_double_gun_bullet
+Sprite: spr_double_gun_bullet
+Solid: false
+Visible: true
+Depth: 0
+Persistent: false
+Parent: obj_bullet_parent
+Children: 
+Mask: 
+
+No Physics Object
+Create Event:
+
+execute code:
+
+///Set up
+live=true;
+alarm[0]=room_speed;
+strength=global.weapon_info[1,2];
+global.weapon_info[6,2]+=1;
+
+Collision Event with object obj_asteroid_parent:
+
+execute code:
+
+///explosion and sound effect
+scr_play_effect(snd_explosion_double_gun);
+effect_create_above(ef_explosion,x,y,5,c_orange);
+

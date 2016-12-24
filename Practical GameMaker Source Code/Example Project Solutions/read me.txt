@@ -1,0 +1,6 @@
+The example solutions shown are for reference.
+Sometimes there is more than method to acheive the same result.
+Actual method will depend on the context that the code is being used in.
+
+If you, or your students, use a different approach, then do not
+consider this an error.
